@@ -35,7 +35,7 @@ class YouTubeChatter {
 
   private L: Logger;
 
-  private chatId?: string;
+  private static chatId?: string;
 
   private messageText = '1';
 
@@ -79,12 +79,12 @@ class YouTubeChatter {
       this.L.error(`Giving up sending message after ${MAX_SEND_ATTEMPTS} attempt(s)`);
       return;
     }
-    const chatId = await this.getChatId();
-    if (!chatId) {
-      this.L.warn('Could not get chatId for channel livestream');
-      return;
-    }
     try {
+      const chatId = await this.getChatId();
+      if (!chatId) {
+        this.L.warn('Could not get chatId for channel livestream');
+        return;
+      }
       await this.youtube.liveChatMessages.insert({
         part: ['snippet'],
         requestBody: {
@@ -99,14 +99,18 @@ class YouTubeChatter {
       });
       this.L.info('Sent message');
     } catch (err) {
+      if (err.message.includes('quota')) {
+        this.L.error(err);
+        return;
+      }
       this.L.warn(err);
-      this.chatId = undefined; // The chatId may have expired, so invalidate it to force getting a new one on the retry attempt
+      YouTubeChatter.chatId = undefined; // The chatId may have expired, so invalidate it to force getting a new one on the retry attempt
       await this.sendMessage(fireDate, attempt + 1);
     }
   }
 
   private async getChatId(): Promise<string | null> {
-    if (this.chatId) return this.chatId;
+    if (YouTubeChatter.chatId) return YouTubeChatter.chatId;
 
     const liveSearchResult = await this.youtube.search.list({
       part: ['snippet'],
@@ -122,8 +126,8 @@ class YouTubeChatter {
     });
     const chatId = videoDetails.data?.items?.[0]?.liveStreamingDetails?.activeLiveChatId;
     if (!chatId) return null;
-    this.chatId = chatId;
-    return this.chatId;
+    YouTubeChatter.chatId = chatId;
+    return YouTubeChatter.chatId;
   }
 }
 
