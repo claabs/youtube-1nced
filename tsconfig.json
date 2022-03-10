@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    // see https://github.com/tsconfig/bases/blob/main/bases/node16.json
+    "target": "ES2021",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./dist", /* Redirect output structure to the directory. */
+    "esModuleInterop": true,
+    "strict": true,
+    "inlineSourceMap": true,
+    "useUnknownInCatchVariables": false,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "youtube-1nced",
+  "version": "1.0.0",
+  "description": "Send \"1\" every so often in a YouTube live chat",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "rimraf dist && tsc",
+    "lint": "tsc --noEmit && eslint .",
+    "docker:build": "docker build . -t ghcr.io/claabs/youtube-1nced:latest --target deploy",
+    "docker:run": "docker run --rm -ti -v $(pwd)/config:/usr/app/config -p 6222:6222 ghcr.io/claabs/youtube-1nced:latest"
+  },
+  "keywords": [
+    "youtube",
+    "chatbot"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.3",
+    "google-auth-library": "^7.14.0",
+    "googleapis": "^96.0.0",
+    "node-schedule": "^2.1.0",
+    "pino": "^7.8.1",
+    "pino-pretty": "^7.5.3",
+    "simple-json-db": "^2.0.0",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.26",
+    "@types/node-schedule": "^1.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "eslint": "^8.10.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  }
+}
