@@ -1,6 +1,6 @@
 # youtube-1nced
 
-Sends "1" in a desired YouTube live stream chat every so often.
+Sends "1" (or any desired random message) in a desired YouTube live stream chat every so often.
 
 ## Usage
 
@@ -15,6 +15,7 @@ Sends "1" in a desired YouTube live stream chat every so often.
         "clientId": "000000000000-abc123abc123abc123abc123.apps.googleusercontent.com",
         "clientSecret": "abc123abc123abc123abc123abc123abc123",
         "redirectUrl": "http://localhost:6222/callback",
+        "messageExp": "[0-9a-f]{1,5}",
     }
     ```
 

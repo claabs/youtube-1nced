@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import schedule from 'node-schedule';
 import type { Logger } from 'pino';
 import { Credentials } from 'google-auth-library';
+import RandExp from 'randexp';
 import logger from './logger';
 import config from './config';
 import sessions from './sessions';
@@ -22,6 +23,11 @@ const { clientId, clientSecret } = config;
 
 const MAX_SEND_ATTEMPTS = 2;
 
+const messageExp = new RandExp(config.messageExp || /1/);
+function generateMessage(): string {
+  return messageExp.gen();
+}
+
 class YouTubeChatter {
   private chatChannelId: string;
 
@@ -36,8 +42,6 @@ class YouTubeChatter {
   private L: Logger;
 
   private static chatId?: string;
-
-  private messageText = '1';
 
   constructor(props: YouTubeChatterProps) {
     this.chatChannelId = props.channelId;
@@ -85,6 +89,8 @@ class YouTubeChatter {
         this.L.warn('Could not get chatId for channel livestream');
         return;
       }
+      const messageText = generateMessage();
+      this.L.debug({ messageText, chatId }, 'Sending message');
       await this.youtube.liveChatMessages.insert({
         part: ['snippet'],
         requestBody: {
@@ -92,7 +98,7 @@ class YouTubeChatter {
             liveChatId: chatId,
             type: 'textMessageEvent',
             textMessageDetails: {
-              messageText: this.messageText,
+              messageText,
             },
           },
         },

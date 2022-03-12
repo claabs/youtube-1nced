@@ -23,6 +23,7 @@
     "node-schedule": "^2.1.0",
     "pino": "^7.8.1",
     "pino-pretty": "^7.5.3",
+    "randexp": "^0.5.3",
     "simple-json-db": "^2.0.0",
     "source-map-support": "^0.5.21"
   },

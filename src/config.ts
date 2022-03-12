@@ -7,6 +7,7 @@ export interface AppConfig {
   clientId: string;
   clientSecret: string;
   redirectUrl: string;
+  messageExp?: string;
   port?: number;
 }
 
